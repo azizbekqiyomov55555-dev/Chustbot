@@ -1,7 +1,10 @@
 import asyncio
 import aiosqlite
 from aiogram import Bot, Dispatcher, F
-from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from aiogram.types import (
+    Message, InlineKeyboardMarkup,
+    InlineKeyboardButton, CallbackQuery
+)
 from aiogram.filters import Command
 
 TOKEN = "8508111889:AAE-5zzVZAU_-k08_YdZODxB8fx2TZqdnSI"
@@ -23,20 +26,32 @@ async def db_init():
         """)
         await db.commit()
 
-# ================= KEYBOARD =================
+# ================= KEYBOARD (2 COLUMN) =================
 async def make_keyboard():
-    buttons = []
+    keyboard = []
+
     async with aiosqlite.connect("db.sqlite") as db:
         async with db.execute("SELECT id,name FROM buttons") as cur:
             rows = await cur.fetchall()
 
-    for row in rows:
-        buttons.append([InlineKeyboardButton(
-            text=row[1],
-            callback_data=f"show_{row[0]}"
-        )])
+    temp_row = []
 
-    return InlineKeyboardMarkup(inline_keyboard=buttons)
+    for btn in rows:
+        temp_row.append(
+            InlineKeyboardButton(
+                text=btn[1],
+                callback_data=f"show_{btn[0]}"
+            )
+        )
+
+        if len(temp_row) == 2:
+            keyboard.append(temp_row)
+            temp_row = []
+
+    if temp_row:
+        keyboard.append(temp_row)
+
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
 # ================= START =================
 @dp.message(Command("start"))
@@ -70,7 +85,7 @@ async def show(call: CallbackQuery):
 
     await call.answer()
 
-# ================= ADMIN ADD =================
+# ================= ADMIN FLOW =================
 admin_state = {}
 
 @dp.message(Command("admin"))
