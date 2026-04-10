@@ -11,7 +11,7 @@ from pyrogram.types import (
     ReplyKeyboardMarkup,
     KeyboardButton
 )
-from pyrogram.enums import ParseMode, ButtonStyle
+from pyrogram.enums import ParseMode
 from static_ffmpeg import add_paths
 
 add_paths()
@@ -581,21 +581,21 @@ async def remove_copyright(video_path: str, mode: str, status_msg) -> tuple:
     return None, found_list
 
 # ──────────────────────────────────────────────
-#  MENYU — RANGLI TUGMALAR
+#  MENYU — TUGMALAR
 # ──────────────────────────────────────────────
 
 def main_kb():
     return ReplyKeyboardMarkup([
-        [KeyboardButton("🎬 Kino qismlarini birlashtirish", style=ButtonStyle.SUCCESS)],
+        [KeyboardButton("🎬 Kino qismlarini birlashtirish")],
         [
-            KeyboardButton("🎞 Video ishlash", style=ButtonStyle.PRIMARY),
-            KeyboardButton("🖼 Rasm ishlash",  style=ButtonStyle.PRIMARY),
+            KeyboardButton("🎞 Video ishlash"),
+            KeyboardButton("🖼 Rasm ishlash"),
         ],
         [
-            KeyboardButton("📊 Statistika", style=ButtonStyle.PRIMARY),
-            KeyboardButton("❓ Yordam",      style=ButtonStyle.PRIMARY),
+            KeyboardButton("📊 Statistika"),
+            KeyboardButton("❓ Yordam"),
         ],
-        [KeyboardButton("🚫 YT taqiqini olib tashlash", style=ButtonStyle.DANGER)],
+        [KeyboardButton("🚫 YT taqiqini olib tashlash")],
     ], resize_keyboard=True, is_persistent=True)
 
 # ──────────────────────────────────────────────
